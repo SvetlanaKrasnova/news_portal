@@ -1,41 +1,65 @@
 from django.db import models
+from django.contrib.auth.models import User
 from account.models import Author
 
 
 # Create your models here.
-class News(models.Model):
+class Category(models.Model):
+    name = models.CharField(unique=True, max_length=100)
+
+
+class Post(models.Model):
     """
     Статья
     """
-    development = 'IT'
-    sd = 'SD'
-    marketing = 'Marketing'
-    management = 'Management'
-    scientific = 'Science'
-
-    TOPIC = [
-        (development, 'Разработка'),
-        (sd, 'Администрирование'),
-        (marketing, 'Маркетинг'),
-        (management, 'Менеджмент'),
-        (scientific, 'Научная')
+    paper = 'Paper'
+    news = 'News'
+    TYPE_POST = [
+        (paper, 'Статья'),
+        (news, 'Новость')
     ]
-    name = models.CharField(max_length=255)  # Наименование статьи
+    title = models.CharField(max_length=150)  # Наименование статьи (заголовок)
     publishing_date = models.DateTimeField(auto_now_add=True)  # Дата и время создания
-    description = models.TextField(default="Описание не указано")  # Текст статьи
-    topic = models.CharField(max_length=10,
-                             choices=TOPIC,
-                             default=sd)  # На какую тему статья
+    text = models.TextField()  # Текст статьи
+    category = models.ManyToManyField(Category, through='PostCategory')  # На какую тему статья
+    type_post = models.CharField(max_length=10,
+                                 choices=TYPE_POST,
+                                 default=paper)  # Тип публикации
     author = models.ForeignKey(Author, on_delete=models.CASCADE)  # связь между «Автором» и «Статьей».
     rating = models.FloatField(default=0)  # Популярность статьи (рейтинг)
+
+    def like(self):
+        self.rating += 1
+        self.save()
+
+    def dislike(self):
+        self.rating -= 1
+        self.save()
+
+    def preview(self, length: int = 124):
+        return self.text if self.text.__len__() < length else f'{self.text[:length]} ...'
 
 
 class Comment(models.Model):
     """
     Комментарий к статье
     """
-    news = models.ForeignKey(News, on_delete=models.CASCADE) # К какой статье оставлен коммент
-    author = models.ForeignKey(Author, on_delete=models.CASCADE) # Кто написал
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)  # К какой статье оставлен коммент
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)  # Кто написал
     text = models.CharField(max_length=255)
     date_time = models.DateTimeField(auto_now_add=True)
-    rating = models.IntegerField(default=0) # На сколько полезен комментарий
+    rating = models.IntegerField(default=0)  # На сколько полезен комментарий
+
+    def like(self):
+        self.rating += 1
+        self.save()
+
+    def dislike(self):
+        self.rating -= 1
+        self.save()
+
+
+class PostCategory(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
