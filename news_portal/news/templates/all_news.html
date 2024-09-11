@@ -1,14 +1,27 @@
-<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'default.html' %}
 {% load custom_filters %}
 
-<!-- Название у нас будет products -->
 {% block title %}
-Post
+All Post
 {% endblock title %}
 
-<!-- В контенте на странице мы выводим все товары -->
 {% block content %}
-<h1>Все публикации</h1>
-{{ all_news }}
+   <h1>Все публикации ({{ all_news|length }})</h1>
+   <h3>{{ time_now|date:'M d Y' }}</h3>
+   <hr>
+   {% if all_news %}
+        {% for news in all_news %}
+            <div class="card mb-4">
+<!--                    <a href="#!"><img class="card-img-top" src="..." alt="..." /></a>-->
+                <div class="card-body">
+                    <div class="small text-muted">{{ news.publishing_date|date:'l d, M' }}</div>
+                    <h2 class="card-title h4">{{ news.title|censor }}</h2>
+                    <p class="card-text">{{ news.text|truncatechars:20|censor }}</p>
+                    <a class="btn btn-primary" href="{{ news.id }}">Read more →</a>
+                </div>
+            </div>
+        {% endfor %}
+   {% else %}
+       <h2>Публикации не найдены!</h2>
+   {% endif %}
 {% endblock content %}

@@ -1,13 +1,36 @@
-<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'default.html' %}
 {% load custom_filters %}
 
-<!-- Название у нас будет Product -->
 {% block title %}
 Post
 {% endblock title %}
 
-<!-- В контенте на странице мы выводим сам пост -->
 {% block content %}
-<h1>{{ one_news }}</h1>
+{% if post %}
+    <!-- Post content-->
+    <article>
+        <!-- Post header-->
+        <header class="mb-4">
+            <!-- Post title-->
+            <h1 class="fw-bolder mb-1">{{ post.title|censor }}</h1>
+            <!-- Post meta content-->
+            <div class="text-muted fst-italic mb-2">Posted on {{ post.publishing_date|date:'l, d.m.Y' }} by {{ post.author.full_name }}</div>
+        </header>
+        <section class="mb-5">
+            <p class="fs-5 mb-4">{{ post.text|censor }}</p>
+        </section>
+    </article>
+{% else %}
+   <h2>Публикация с таким номером не найдена!</h2>
+{% endif %}
 {% endblock content %}
+
+{% block categories %}
+{% if post.category.name %}
+    <div class="col-sm-6">
+        <ul class="list-unstyled mb-0">
+            <li><a href="#!">{{ post.category.name }}</a></li>
+        </ul>
+    </div>
+{% endif %}
+{% endblock categories %}
