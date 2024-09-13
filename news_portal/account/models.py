@@ -21,8 +21,12 @@ class Author(models.Model):
             всех комментариев автора
             всех комментариев к статьям автора
         """
-        posts_rating = self.post_set.aggregate(result=Sum('rating')).get('result')
-        comments_rating = self.user.comment_set.aggregate(result=Sum('rating')).get('result')
+        # Если у автора ещё нет комментариев и постов, то пишем "0", так как Sum вернет None
+        if posts_rating := self.post_set.aggregate(result=Sum('rating')).get('result') is None:
+            posts_rating = 0
+
+        if comments_rating := self.user.comment_set.aggregate(result=Sum('rating')).get('result') is None:
+            comments_rating = 0
 
         self.rating = posts_rating * 3 + comments_rating
         self.save()

@@ -28,6 +28,9 @@ class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)  # связь между «Автором» и «Статьей».
     rating = models.FloatField(default=0)  # Популярность статьи (рейтинг)
 
+    def __str__(self):
+        return self.title.title()
+
     def like(self):
         self.rating += 1
         self.save()
