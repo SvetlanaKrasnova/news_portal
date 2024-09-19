@@ -1,12 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 from account.models import Author
+from django.urls import reverse
 
 
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(unique=True, max_length=100)
 
+    def __str__(self):
+        return self.name.title()
 
 class Post(models.Model):
     """
@@ -22,14 +25,14 @@ class Post(models.Model):
     publishing_date = models.DateTimeField(auto_now_add=True)  # Дата и время создания
     text = models.TextField()  # Текст статьи
     category = models.ManyToManyField(Category, through='PostCategory')  # На какую тему статья
-    type_post = models.CharField(max_length=10,
-                                 choices=TYPE_POST,
-                                 default=paper)  # Тип публикации
     author = models.ForeignKey(Author, on_delete=models.CASCADE)  # связь между «Автором» и «Статьей».
     rating = models.FloatField(default=0)  # Популярность статьи (рейтинг)
 
     def __str__(self):
         return self.title.title()
+
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
     def like(self):
         self.rating += 1

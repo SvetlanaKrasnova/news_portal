@@ -1,0 +1,19 @@
+{% extends 'default.html' %}
+
+{% block title %}
+Редактирование
+{% endblock title %}
+
+{% block content %}
+<h1 class="fw-bolder mb-1">Публикация</h1>
+<hr class="my-0" />
+<p></p>
+<form action="" method="post">
+    {% csrf_token %}
+    <table>
+    {{ form.as_table }}
+    </table>
+    <p></p>
+    <input class="btn btn-primary" type="submit" value="Сохранить" />
+</form>
+{% endblock content %}

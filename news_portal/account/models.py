@@ -14,6 +14,9 @@ class Author(models.Model):
     rating = models.FloatField(default=0)  # Рейтинг автора
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.full_name.title()
+
     def update_rating(self):
         """
         суммарный рейтинг
