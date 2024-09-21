@@ -6,23 +6,26 @@ Post
 {% endblock title %}
 
 {% block content %}
-{% if post %}
-    <!-- Post content-->
-    <article>
-        <!-- Post header-->
-        <header class="mb-4">
-            <!-- Post title-->
-            <h1 class="fw-bolder mb-1">{{ post.title|censor }}</h1>
-            <!-- Post meta content-->
-            <div class="text-muted fst-italic mb-2">Posted on {{ post.publishing_date|date:'l, d.m.Y' }} by {{ post.author.full_name }}</div>
-        </header>
-        <section class="mb-5">
-            <p class="fs-5 mb-4">{{ post.text|censor }}</p>
-        </section>
-    </article>
-{% else %}
-   <h2 class="card-title h4">Публикация с таким номером не найдена!</h2>
-{% endif %}
+    <div class="col-lg-8">
+        {% if post %}
+            <a class="btn btn-primary" href="/news">← Назад</a>
+            <!-- Post content-->
+            <article>
+                <!-- Post header-->
+                <header class="mb-4">
+                    <!-- Post title-->
+                    <h1 class="fw-bolder mb-1">{{ post.title|censor }}</h1>
+                    <!-- Post meta content-->
+                    <div class="text-muted fst-italic mb-2">Posted on {{ post.publishing_date|date:'l, d.m.Y' }} by {{ post.author.full_name }}</div>
+                </header>
+                <section class="mb-5">
+                    <p class="fs-5 mb-4">{{ post.text|censor }}</p>
+                </section>
+            </article>
+        {% else %}
+           <h2 class="card-title h4">Публикация с таким номером не найдена!</h2>
+        {% endif %}
+    </div>
 {% endblock content %}
 
 {% block categories %}
