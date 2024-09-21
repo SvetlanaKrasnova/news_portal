@@ -15,16 +15,19 @@ class Post(models.Model):
     """
     Статья
     """
-    paper = 'Paper'
-    news = 'News'
+    ARTICLES = 'Articles'
+    NEWS = 'News'
     TYPE_POST = [
-        (paper, 'Статья'),
-        (news, 'Новость')
+        (ARTICLES, 'Статья'),
+        (NEWS, 'Новость')
     ]
     title = models.CharField(max_length=150)  # Наименование статьи (заголовок)
     publishing_date = models.DateTimeField(auto_now_add=True)  # Дата и время создания
     text = models.TextField()  # Текст статьи
     category = models.ManyToManyField(Category, through='PostCategory')  # На какую тему статья
+    type_post = models.CharField(max_length=10,
+                                 choices=TYPE_POST,
+                                 default=ARTICLES)  # Тип публикации
     author = models.ForeignKey(Author, on_delete=models.CASCADE)  # связь между «Автором» и «Статьей».
     rating = models.FloatField(default=0)  # Популярность статьи (рейтинг)
 
