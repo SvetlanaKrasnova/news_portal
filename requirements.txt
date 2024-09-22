@@ -1,2 +1,6 @@
 django==4.2.15
 django-filter==24.3
+wheel==0.44.0
+django-allauth==65.0.0
+requests==2.32.3
+jwt==1.1.0

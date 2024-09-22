@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-fb(n%+02!-((m!(*22!6s9=#fl6+pl2(e5zu3yu@t4%$111nq6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -41,7 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     'news',
-    'account'
+    'user_account',
+    'django_filters',
+
+    'sign',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # ... include the providers you want to enable:
+    'allauth.socialaccount.providers.google',
 ]
 
 SITE_ID = 1
@@ -54,7 +62,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware'
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    
+    # Add the account middleware:
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'news_portal.urls'
@@ -74,6 +85,33 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# указывают на то, что поле email является обязательным и уникальным
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+
+# наоборот, говорит, что username теперь необязательный
+ACCOUNT_USERNAME_REQUIRED = False
+
+# указывает, что аутентификация будет происходить посредством электронной почты
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+# указываем, что верификация почты отсутствует
+# Обычно на почту отправляется подтверждение аккаунта,
+# после подтверждения которого восстанавливается полная
+# функциональность учётной записи.
+# Для тестового проекта это необязательно делать
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+ACCOUNT_FORMS = {'signup': 'sign.forms.BasicSignupForm'}
 
 WSGI_APPLICATION = 'news_portal.wsgi.application'
 
@@ -131,3 +169,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+LOGIN_URL = 'accounts/login/'
+LOGIN_REDIRECT_URL = '/'
