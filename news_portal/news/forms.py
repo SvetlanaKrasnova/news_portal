@@ -9,14 +9,12 @@ class PostForm(forms.ModelForm):
         fields = [
             'title',
             'author',
-            'type_post',
             'text',
             'category',
         ]
         labels = {
             'title': 'Наименование',
             'author': 'Автор',
-            'type_post': 'Тип публикации',
             'text': 'Текст',
             'category': 'Категория'
         }

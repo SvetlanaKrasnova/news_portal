@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView
 from .models import Post
 from .forms import PostForm
 from .filters import PostFilter
@@ -60,12 +61,20 @@ class PostDelete(DeleteView):
     success_url = reverse_lazy('post_list')
 
 
-def create_post(request):
-    form = PostForm()
+class CreatePost(CreateView):
+    form_class = PostForm
+    model = Post
+    template_name = 'post_edit.html'
 
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/news/')
-    return render(request, 'post_edit.html', {'form': form})
+    def form_valid(self, form):
+        # Получаем данные из формы
+        self.object = form.save()
+
+        # В зависимости от вызываемого url, подменяем тип публикации
+        # Если articles/create/ - Статья (этот тип стоит по умолчанию в модели)
+        # Если news/create/ - меняем тип на Новость
+        if str(self.request).__contains__('news/create'):
+            self.object.type_post = 'News'
+
+        self.object.save()
+        return HttpResponseRedirect('/news/')
