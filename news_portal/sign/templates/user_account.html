@@ -1,0 +1,46 @@
+{% extends 'default.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Профиль
+{% endblock title %}
+
+{% block content %}
+    <div class="col-lg-8">
+        <article>
+            <header class="mb-4">
+                <h1 class="fw-bolder mb-1">{{full_name}}</h1>
+                {% if not is_not_authors %}
+                    <div class="text-muted fst-italic mb-2">Вы являетесь автором<br>Ваш рейтинг: 0</div>
+                {% endif %}
+                <p class="fw-bolder mb-1">Email: {{request.user.email}}</p>
+                <p class="fw-bolder mb-1">Name: {{request.user.username}}</p>
+            </header>
+            <section class="mb-5">
+                {% if is_not_authors %}
+                    <a class="btn btn-primary" href="/sign/upgrade/">Хочу стать автором!</a>
+                {% else %}
+                    <hr class="my-0">
+                    <br>
+                    <a class="btn btn-primary" href="/news/create/">Создать Новость</a>
+                    <a class="btn btn-primary" href="/articles/create/">Создать Статью</a>
+                    {% if all_news %}
+                        <div class="text-muted fst-italic mb-2">Ваши публикации (0)</div>
+                        {% for news in all_news %}
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                <div class="small text-muted">{{ news.publishing_date|date:'l d, M' }}</div>
+                                <h2 class="card-title h4">{{ news.title|censor }}</h2>
+                                <a class="btn btn-primary" href="/{{ news.id }}">Читать →</a>
+                                <a class="btn btn-primary" href="/{{ news.type_post|lower }}/{{ news.id }}/edit">Редактировать</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-muted fst-italic mb-2">У Вас пока нет ни одной публикации</div>
+                    {% endif %}
+                {% endif %}
+            </section>
+        </article>
+    </div>
+{% endblock %}

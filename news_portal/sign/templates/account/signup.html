@@ -1,0 +1,47 @@
+{% extends "allauth/layouts/base.html" %}
+{% load allauth i18n %}
+
+{% load account socialaccount %}
+
+{% block head_title %} Регистрация {% endblock %}
+
+{% block content %}
+
+<h1 class="fw-bolder mb-1">Регистрация</h1>
+<p></p>
+<p></p>
+
+{% get_providers as socialaccount_providers %}
+
+{% if socialaccount_providers %}
+<p>{% blocktrans with site.name as site_name %}C помощью сервиса:{% endblocktrans %}</p>
+
+<div class="col-lg-8">
+  <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+  </ul>
+  <p></p>
+  <p></p>
+</div>
+
+{% include "socialaccount/snippets/login_extra.html" %}
+
+{% else %}
+<p>{% blocktrans %}If you have not created an account yet, then please
+<a class="btn btn-primary" href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+{% endif %}
+
+<form class="login" method="POST" action="">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <a class="btn btn-primary" href="{% url 'account_reset_password' %}">Забыли пароль?</a>
+  <input class="btn btn-primary" type="submit" value="Зарегистрироваться" />
+</form>
+
+{% if socialaccount_providers %}
+<p>Уже зарегистрированы? <a href="{{ login_url }}">Войдите</a></p>
+{% endif %}
+{% endblock %}

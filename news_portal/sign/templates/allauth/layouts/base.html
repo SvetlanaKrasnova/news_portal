@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>
-            {% block title %}
-            {% endblock title %}
-        </title>
+        <title>{% block head_title %}{% endblock head_title %}</title>
         {% load static %}
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
@@ -22,22 +18,18 @@
                 <a class="navbar-brand" href="/">Новостной портал</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active">Привет, {{ request.user.first_name }} {{ request.user.last_name}}!</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/sign/user_account">Профиль</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/accounts/logout">Выйти</a></li>
-<!--                    <li class="nav-item"><a class="nav-link active" aria-current="page">Войти</a></li>-->
-                    </ul>
                 </div>
             </div>
         </nav>
-        <!-- Page content-->
         <div class="container mt-5">
             <div class="row">
-               {% block content %}
-               {% endblock content %}
-           </div>
+                {% block body %}
+                {% block content %}
+                {% endblock content %}
+                {% endblock body %}
+                {% block extra_body %}
+                {% endblock extra_body %}
+            </div>
         </div>
-        <script src="js/scripts.js"></script>
     </body>
 </html>
