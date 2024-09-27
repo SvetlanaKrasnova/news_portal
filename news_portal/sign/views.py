@@ -1,20 +1,23 @@
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
-from django.views.generic.edit import CreateView
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
-from .forms import BaseRegisterForm
+from news.models import Post
 
 
 # Create your views here.
-class IndexView(LoginRequiredMixin, TemplateView):
-    template_name = 'sign.html'
+class PersonalAccount(LoginRequiredMixin, TemplateView):
+    """
+    Страница профиля (личный кабинет)
+    """
+    template_name = 'user_account.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_not_premium'] = not self.request.user.groups.filter(name='premium').exists()
+        context['full_name'] = f'{self.request.user.first_name} {self.request.user.last_name}'
+        context['all_news'] = Post.objects.filter(author__user=self.request.user.id)
+        context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
         return context
 
 

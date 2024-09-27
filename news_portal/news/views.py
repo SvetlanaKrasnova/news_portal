@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from django.views.generic.edit import CreateView
 from .models import Post
+from sign.models import Author
 from .forms import PostForm
 from .filters import PostFilter
 
