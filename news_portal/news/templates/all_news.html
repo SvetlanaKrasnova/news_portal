@@ -9,7 +9,7 @@ All Post
 {% block content %}
     <h1>Все публикации ({{ all_news|length }})</h1>
     <h3>{{ time_now|date:'M d Y' }}</h3>
-    <hr>
+    <hr class="my-0">
     <div class="col-lg-8">
         {% if all_news %}
             {% for news in all_news %}
@@ -19,7 +19,9 @@ All Post
                         <h2 class="card-title h4">{{ news.title|censor }}</h2>
                         <p class="card-text">{{ news.text|truncatechars:20|censor }}</p>
                         <a class="btn btn-primary" href="/{{ news.id }}">Читать →</a>
-<!--                        <a class="btn btn-primary" href="/{{ news.type_post|lower }}/{{ news.id }}/edit">Редактировать</a>-->
+                        {% if news.author.user.id == user_id %}
+                            <a class="btn btn-primary" href="/{{ news.type_post|lower }}/{{ news.id }}/edit">Редактировать</a>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
@@ -64,7 +66,7 @@ All Post
                        <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
                        <li class="page-item"><a class="page-link" href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a></li>
                    {% endif %}
-                    {% endif %}
+                {% endif %}
             </ul>
         </nav>
     </div>

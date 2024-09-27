@@ -21,15 +21,16 @@ class PersonalAccount(LoginRequiredMixin, TemplateView):
         return context
 
 
-class BaseRegisterView(CreateView):
-    model = User
-    form_class = BaseRegisterForm
-    success_url = '/'
-
 @login_required
 def upgrade_me(request):
+    """
+    Добавление прав на публикацию статей (а так же на редактирование и удаление своих статей)
+    :param request:
+    :return:
+    """
     user = request.user
-    premium_group = Group.objects.get(name='premium')
-    if not request.user.groups.filter(name='premium').exists():
+    premium_group = Group.objects.get(name='authors')
+    if not request.user.groups.filter(name='authors').exists():
         premium_group.user_set.add(user)
-    return redirect('/')
+
+    return redirect('/sign/user_account/')

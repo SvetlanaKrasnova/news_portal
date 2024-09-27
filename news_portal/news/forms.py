@@ -8,13 +8,11 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = [
             'title',
-            'author',
             'text',
             'category',
         ]
         labels = {
             'title': 'Наименование',
-            'author': 'Автор',
             'text': 'Текст',
             'category': 'Категория'
         }
