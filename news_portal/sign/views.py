@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
-from news.models import Post
+from news.models import Post, Category, UserCategory
 
 
 # Create your views here.
@@ -18,7 +18,33 @@ class PersonalAccount(LoginRequiredMixin, TemplateView):
         context['full_name'] = f'{self.request.user.first_name} {self.request.user.last_name}'
         context['all_news'] = Post.objects.filter(author__user=self.request.user.id)
         context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
+
+        # Для отображения подписок пользователя
+        context['user_subscribe'] = []
+        user_subscribe = UserCategory.objects.filter(user_id=self.request.user.id)
+        for obj in user_subscribe:
+            context['user_subscribe'].append(Category.objects.get(id=obj.category_id))
+
+        all_categorys = Category.objects.all()
+        context['categorys'] = [category for category in all_categorys if not category in context['user_subscribe']]
+
         return context
+
+    def post(self, request, *args, **kwargs):
+        # Подписаться на категорию
+        subscribe = request.POST.get('subscribe', None)
+        if subscribe:
+            if not UserCategory.objects.filter(category_id=subscribe, user_id=self.request.user.id).exists():
+                UserCategory.objects.create(category_id=subscribe,
+                                            user_id=self.request.user.id)
+
+        # Отписаться от категории
+        unsubscribe = request.POST.get('unsubscribe', None)
+        if unsubscribe:
+            subscribe = UserCategory.objects.get(category_id=unsubscribe,
+                                                 user_id=self.request.user.id)
+            subscribe.delete()
+        return redirect('/sign/user_account/')
 
 
 @login_required

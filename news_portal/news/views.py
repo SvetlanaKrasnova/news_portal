@@ -83,4 +83,9 @@ class CreatePost(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
             object.type_post = 'News'
 
         object.save()
+
+        # Обновляем категории публикации
+        for category_id in dict(self.request.POST)['category']:
+            PostCategory.objects.create(category_id=category_id, post_id=Post.objects.last().pk)
+
         return HttpResponseRedirect('/sign/user_account')

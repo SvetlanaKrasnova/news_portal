@@ -43,4 +43,42 @@
             </section>
         </article>
     </div>
+    <!-- Side widgets-->
+    <div class="col-lg-4">
+        <!-- Search widget-->
+        <div class="card mb-4">
+            <div class="card-header">Подписка на категории</div>
+            <div class="card-body">
+                <form action="/sign/user_account/" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <select class="form-control" name="subscribe">
+                            {% for category in categorys %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <input class="btn btn-primary" id="button-subscribe" type="submit" value="Подписаться">
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if user_subscribe %}
+            <div class="card mb-4">
+                <div class="card-header">Ваши подписки</div>
+                <div class="card-body">
+                    <form action="/sign/user_account/" method="POST">
+                    {% csrf_token %}
+                        <div class="input-group">
+                            <select class="form-control" name="unsubscribe">
+                                {% for category in user_subscribe %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <input class="btn btn-primary" id="button-unsubscribe" type="submit" value="Отписаться">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

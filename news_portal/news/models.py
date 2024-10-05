@@ -7,9 +7,14 @@ from django.urls import reverse
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(unique=True, max_length=100)
+    subscribers = models.ManyToManyField(User, through="UserCategory", related_name='users')
 
     def __str__(self):
         return self.name.title()
+
+class UserCategory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 class Post(models.Model):
     """
