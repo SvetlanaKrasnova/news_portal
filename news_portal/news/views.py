@@ -65,6 +65,11 @@ class PostEdit(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Post
     template_name = 'post_edit.html'
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'action': 'edit_post'})
+        return kwargs
+
 
 class PostDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     """
@@ -73,7 +78,7 @@ class PostDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     permission_required = ('news.delete_post',)
     model = Post
     template_name = 'post_delete.html'
-    success_url = reverse_lazy('post_list')
+    success_url = reverse_lazy('user_account')
 
 
 class CreatePost(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
@@ -81,6 +86,12 @@ class CreatePost(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'action': 'create_post', 'user_id': self.request.user.id})
+        print(f'kwargs: {kwargs}')
+        return kwargs
 
     def form_valid(self, form):
         object = form.save(commit=False)

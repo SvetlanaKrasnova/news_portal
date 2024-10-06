@@ -1,3 +1,4 @@
+from datetime import date
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -18,6 +19,8 @@ class PersonalAccount(LoginRequiredMixin, TemplateView):
         context['full_name'] = f'{self.request.user.first_name} {self.request.user.last_name}'
         context['all_news'] = Post.objects.filter(author__user=self.request.user.id)
         context['is_not_authors'] = not self.request.user.groups.filter(name='authors').exists()
+        context['can_create'] = Post.objects.filter(author__user=self.request.user.id,
+                                                    publishing_date__gt=date.today()).count() < 3
 
         # Для отображения подписок пользователя
         context['user_subscribe'] = []
