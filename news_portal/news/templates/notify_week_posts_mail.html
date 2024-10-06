@@ -5,14 +5,18 @@
     <title>Уведомление</title>
 </head>
 <body>
-    <h2>Статьи прошедшей недели:</h2>
+    <div>
+        <table>
+            {% for post in posts %}
+                <tr>
+                    <td>
+                        <a class="card-body" href="{{link_home}}{{post.get_absolute_url}}">{{post.title}}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <p></p>
     <a href="{{ link_filter }}">Читать все →</a>
-    <ul>
-        {% for post in posts %}
-        <li>
-            <a href="{{link_home}}{{post.get_absolute_url}}">{{post.title}}</a>
-        </li>
-        {% endfor %}
-    </ul>
 </body>
 </html>

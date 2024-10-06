@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Завершение регистрации</title>
 </head>
 <body>
-    {% load account %} <!-- Загружаем тег, который позволит получить нам ссылку на подтверждение -->
-    <h1>Thank you for registering {{ user.username }}!</h1>
-    <h3>Please follow <a href="{{ activate_url }}">the link</a> to activate your account</h3>
-     <!-- Вставляем ссылку на активацию -->
+    {% load account %}
+    <h1 class="fw-bolder mb-1">{{ user.username }}, cпасибо за регистрацию на нашем портале!</h1>
+    <h3 class="fw-bolder mb-3">Пожалуйста, перейдите по <a href="{{ activate_url }}">ссылке</a>, чтобы активировать ваш аккаунт.</h3>
 </body>
 </html>

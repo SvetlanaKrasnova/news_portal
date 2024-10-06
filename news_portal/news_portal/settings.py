@@ -130,10 +130,9 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 
 # указываем, что верификация почты отсутствует
-# Обычно на почту отправляется подтверждение аккаунта,
+# На почту отправляется подтверждение аккаунта,
 # после подтверждения которого восстанавливается полная
 # функциональность учётной записи.
-# Для тестового проекта это необязательно делать
 # ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 ACCOUNT_FORMS = {'signup': 'sign.forms.BasicSignupForm'}
