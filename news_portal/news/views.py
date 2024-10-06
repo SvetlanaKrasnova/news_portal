@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from .models import Post
+from .models import Post, PostCategory, Category
 from sign.models import Author
 from .forms import PostForm
 from .filters import PostFilter
@@ -44,6 +44,16 @@ class PostDetail(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'one_news.html'
     context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        categories = []
+        for obj in PostCategory.objects.filter(post_id=context['object'].id):
+            categories.append(Category.objects.get(id=obj.category_id).name)
+
+        context['categories'] = categories
+        context['user_id'] = self.request.user.id
+        return context
 
 
 class PostEdit(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
