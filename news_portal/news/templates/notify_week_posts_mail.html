@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Уведомление</title>
+</head>
+<body>
+    <h2>Статьи прошедшей недели:</h2>
+    <a href="{{ link_filter }}">Читать все →</a>
+    <ul>
+        {% for post in posts %}
+        <li>
+            <a href="{{link_home}}{{post.get_absolute_url}}">{{post.title}}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
