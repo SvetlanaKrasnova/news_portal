@@ -27,8 +27,8 @@
 {% include "socialaccount/snippets/login_extra.html" %}
 
 {% else %}
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a class="btn btn-primary" href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+<p>{% blocktrans %}Уже зарегистрированы?
+<a href="{{ login_url }}">Войдите</a>{% endblocktrans %}</p>
 {% endif %}
 
 <form class="login" method="POST" action="">

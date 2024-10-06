@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from news.models import Post, Category, UserCategory
 
@@ -25,8 +25,8 @@ class PersonalAccount(LoginRequiredMixin, TemplateView):
         for obj in user_subscribe:
             context['user_subscribe'].append(Category.objects.get(id=obj.category_id))
 
-        all_categorys = Category.objects.all()
-        context['categorys'] = [category for category in all_categorys if not category in context['user_subscribe']]
+        all_categories = Category.objects.all()
+        context['categories'] = [category for category in all_categories if not category in context['user_subscribe']]
 
         return context
 

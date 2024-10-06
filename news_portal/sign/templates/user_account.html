@@ -33,10 +33,12 @@
                                 <h2 class="card-title h4">{{ news.title|censor }}</h2>
                                 <a class="btn btn-primary" href="/{{ news.id }}">Читать →</a>
                                 <a class="btn btn-primary" href="/{{ news.type_post|lower }}/{{ news.id }}/edit">Редактировать</a>
+                                <a class="btn btn-primary" href="/{{ news.type_post|lower }}/{{ news.id }}/delete">Удалить</a>
                                 </div>
                             </div>
                         {% endfor %}
                     {% else %}
+                        <p></p>
                         <div class="text-muted fst-italic mb-2">У Вас пока нет ни одной публикации</div>
                     {% endif %}
                 {% endif %}
@@ -53,7 +55,7 @@
                     {% csrf_token %}
                     <div class="input-group">
                         <select class="form-control" name="subscribe">
-                            {% for category in categorys %}
+                            {% for category in categories %}
                                 <option value="{{ category.id }}">{{ category.name }}</option>
                             {% endfor %}
                         </select>
