@@ -10,6 +10,7 @@ All Post
     <h1>Все публикации ({{ all_news|length }})</h1>
     <h3>{{ time_now|date:'M d Y' }}</h3>
     <hr class="my-0">
+    <p></p>
     <div class="col-lg-8">
         {% if all_news %}
             {% for news in all_news %}
@@ -18,7 +19,7 @@ All Post
                         <div class="small text-muted">{{ news.publishing_date|date:'l d, M' }}</div>
                         <h2 class="card-title h4">{{ news.title|censor }}</h2>
                         <p class="card-text">{{ news.text|truncatechars:20|censor }}</p>
-                        <a class="btn btn-primary" href="/{{ news.id }}">Читать →</a>
+                        <a class="btn btn-primary" href="/news/{{ news.id }}">Читать →</a>
                         {% if news.author.user.id == user_id %}
                             <a class="btn btn-primary" href="/{{ news.type_post|lower }}/{{ news.id }}/edit">Редактировать</a>
                         {% endif %}

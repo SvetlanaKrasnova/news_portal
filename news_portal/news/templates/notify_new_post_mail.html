@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Уведомление</title>
+</head>
+<body>
+    <h2>Здравствуй, {{ username }}.<br>Новая статья в твоём любимом разделе!</h2>
+    <p>{{ post.text|truncatechars:50 }} ...</p>
+    <a href="{{ link }}">Читать →</a>
+</body>
+</html>

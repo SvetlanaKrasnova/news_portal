@@ -5,3 +5,5 @@ django-allauth==65.0.0
 requests==2.32.3
 jwt==1.1.0
 pyjwt==2.9.0
+python-dotenv==1.0.1
+django-apscheduler==0.7.0
