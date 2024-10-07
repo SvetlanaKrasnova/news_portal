@@ -7,6 +7,7 @@ from .models import Post, PostCategory, Category
 from sign.models import Author
 from .forms import PostForm
 from .filters import PostFilter
+from .tasks import notify_new_post
 
 
 # Create your views here.
@@ -109,4 +110,5 @@ class CreatePost(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         for category_id in dict(self.request.POST)['category']:
             PostCategory.objects.create(category_id=category_id, post_id=Post.objects.last().pk)
 
+        notify_new_post.apply_async([object.pk], countdown=5)
         return HttpResponseRedirect('/sign/user_account')

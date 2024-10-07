@@ -15,7 +15,6 @@ from news.models import Post, Category
 logger = logging.getLogger(__name__)
 
 
-# наша задача по выводу текста на экран
 def my_job():
     start_date = datetime.now() - timedelta(days=7)
     posts = Post.objects.filter(publishing_date__gte=start_date)
@@ -58,8 +57,8 @@ class Command(BaseCommand):
         # добавляем работу нашему задачнику
         scheduler.add_job(
             my_job,
-            trigger=CronTrigger(second="*/50"),
-            # trigger=CronTrigger(day_of_week='fri', hour="12", minute="00"),
+            # trigger=CronTrigger(second="*/50"),
+            trigger=CronTrigger(day_of_week='mon', hour="12", minute="00"),
             # То же, что и интервал, но задача тригера таким образом более понятна django
             id="my_job",  # уникальный айди
             max_instances=1,

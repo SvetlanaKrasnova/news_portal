@@ -76,6 +76,12 @@ EMAIL_ADMIN = os.getenv('EMAIL_ADMIN')
 SITE_ID = 1
 SITE_URL = f'http://{os.getenv("PROJECT_HOST")}:{os.getenv("PROJECT_PORT")}'
 
+CELERY_BROKER_URL = f'{os.getenv("CELERY_BROKER_HOST")}:{os.getenv("CELERY_BROKER_PORT")}'
+CELERY_RESULT_BACKEND = f'{os.getenv("CELERY_BROKER_HOST")}:{os.getenv("CELERY_BROKER_PORT")}'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
