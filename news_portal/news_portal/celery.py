@@ -11,6 +11,10 @@ app.conf.beat_schedule = {
         'task': 'news.tasks.notify_week_posts',
         'schedule': crontab(hour=8, minute=0, day_of_week='monday'),
     },
+    'clear_task_redis_every_10_minutes': {
+        'task': 'news.tasks.clear_task_redis',
+        'schedule': crontab(minute='*/10'),
+    }
 }
 
 app.autodiscover_tasks()

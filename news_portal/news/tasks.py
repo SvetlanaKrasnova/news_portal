@@ -1,9 +1,14 @@
+import redis
+import json
+import logging
 from django.conf import settings
 from datetime import datetime, timedelta
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from celery import shared_task
 from news.models import Post, Category
+
+logger = logging.getLogger(__name__)
 
 
 def send_mail(post: dict, to: list):
@@ -77,3 +82,26 @@ def notify_week_posts():
 
         msg.attach_alternative(html_content, 'text/html')
         msg.send()
+
+
+@shared_task
+def clear_task_redis():
+    red = redis.Redis(
+        host=settings.REDIS_BROKER_HOST,
+        port=settings.REDIS_BROKER_PORT
+    )
+    queue = [k for k in red.scan_iter()]
+    for k in queue:
+        try:
+            if not str(k).__contains__('celery-task'):
+                continue
+
+            task = json.loads(red.get(k))
+            if task.get('date_done', None):
+                date_done = datetime.strptime(task['date_done'], "%Y-%m-%dT%H:%M:%S.%f+00:00")
+                if date_done <= datetime.now() - timedelta(minutes=10):
+                    red.delete(k)
+        except Exception as e:
+            logger.warning(e)
+
+    red.quit()
