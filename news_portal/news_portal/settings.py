@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-fb(n%+02!-((m!(*22!6s9=#fl6+pl2(e5zu3yu@t4%$111nq6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [os.getenv("PROJECT_HOST")]
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -74,12 +74,10 @@ SERVER_EMAIL = os.getenv('SERVER_EMAIL')
 EMAIL_ADMIN = os.getenv('EMAIL_ADMIN')
 
 SITE_ID = 1
-SITE_URL = f'http://{os.getenv("PROJECT_HOST")}:{os.getenv("PROJECT_PORT")}'
+SITE_URL = f'http://127.0.0.1:8000'
 
-REDIS_BROKER_HOST = os.getenv("REDIS_BROKER_HOST")
-REDIS_BROKER_PORT = os.getenv("REDIS_BROKER_PORT")
-CELERY_BROKER_URL = f'redis://{REDIS_BROKER_HOST}:{REDIS_BROKER_PORT}'
-CELERY_RESULT_BACKEND = f'redis://{REDIS_BROKER_HOST}:{REDIS_BROKER_PORT}'
+CELERY_BROKER_URL = f'redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND = f'redis://127.0.0.1:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
