@@ -7,15 +7,13 @@ All Post
 {% endblock title %}
 
 {% block content %}
-    <h1 class="fw-bolder mb-1">Все публикации ({{ all_news|length }})</h1>
-    <h3>{{ time_now|date:'M d Y' }}</h3>
-    <hr class="my-0">
-    <p></p>
+    <h1 class="fw-bolder mb-1"></h1>
     <div class="col-lg-8">
         {% if all_news %}
             {% for news in all_news %}
                 <div class="card mb-4">
                     <div class="card-body">
+                        <div class="small text-muted">{{ news.type_post }}</div>
                         <div class="small text-muted">{{ news.publishing_date|date:'l d, M' }}</div>
                         <h2 class="card-title h4">{{ news.title|censor }}</h2>
                         <p class="card-text">{{ news.text|truncatechars:20|censor }}</p>
