@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
@@ -55,6 +56,16 @@ class PostDetail(LoginRequiredMixin, DetailView):
         context['categories'] = categories
         context['user_id'] = self.request.user.id
         return context
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+
+        # если объекта нет в кэше, то получаем его и записываем в кэш
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+
+        return obj
 
 
 class PostEdit(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):

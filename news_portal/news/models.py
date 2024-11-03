@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.cache import cache
 from django.contrib.auth.models import User
 from sign.models import Author
 from django.urls import reverse
@@ -43,6 +44,11 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post_detail', args=[str(self.id)])
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Сбрасываем кэш при редактировании объекта
+        cache.delete(f'post-{self.pk}')
 
     def like(self):
         self.rating += 1

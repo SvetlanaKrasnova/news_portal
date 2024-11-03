@@ -95,6 +95,16 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
+        'OPTIONS': {
+                    'MAX_ENTRIES': 100
+                }
+    }
+}
+
 ROOT_URLCONF = 'news_portal.urls'
 
 TEMPLATES = [
