@@ -1,10 +1,11 @@
 from django.core.cache import cache
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from .models import Post, PostCategory, Category
+from .models import Post, PostCategory, Category, Comment
 from sign.models import Author
 from .forms import PostForm
 from .filters import PostFilter
@@ -55,6 +56,7 @@ class PostDetail(LoginRequiredMixin, DetailView):
 
         context['categories'] = categories
         context['user_id'] = self.request.user.id
+        context['comments'] = Comment.objects.filter(post_id=context['object'].id)
         return context
 
     def get_object(self, *args, **kwargs):
@@ -93,7 +95,7 @@ class PostDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('user_account')
 
 
-class CreatePost(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+class PostCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     permission_required = ('news.add_post',)
     form_class = PostForm
     model = Post
@@ -123,3 +125,37 @@ class CreatePost(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
 
         notify_new_post.apply_async([object.pk], countdown=5)
         return HttpResponseRedirect('/sign/user_account')
+
+
+class CommentDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
+    """
+    Удаление комментария
+    """
+    permission_required = ('news.delete_comment',)
+    model = Comment
+    template_name = 'one_news.html'
+
+    def post(self, request, *args, **kwargs):
+        Comment.objects.get(id=kwargs["pk"]).delete()
+        return redirect(f"/news/{request.POST.get('id_post', None)}")
+
+
+class CommentCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+    """
+    Создание комментария
+    """
+    permission_required = ('news.add_comment',)
+    model = Comment
+    template_name = 'one_news.html'
+
+    def post(self, request, *args, **kwargs):
+        text = request.POST.get('text', None)
+        id_post = request.POST['id_post']
+        if text:
+            Comment.objects.create(post=Post.objects.get(id=id_post),
+                                   user=request.user,
+                                   author=Author.objects.get(user_id=request.user.id),
+                                   text=text,
+                                   )
+
+        return redirect(f"/news/{id_post}")

@@ -8092,6 +8092,17 @@ textarea.form-control-lg {
   --bs-text-opacity: 1;
   color: #6c757d !important;
 }
+.bt-delete {
+  border-style: solid;
+  color: #6c757d;
+  font-style: italic;
+  border: none;
+  background: #f8f9fa;
+  padding: 0; margin: 0 0;
+}
+.bt-delete-div {
+  justify-content: flex-end;
+}
 
 .text-black-50 {
   --bs-text-opacity: 1;
