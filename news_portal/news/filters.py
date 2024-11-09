@@ -1,5 +1,5 @@
 from django_filters import FilterSet, ModelMultipleChoiceFilter, CharFilter, DateFilter, ChoiceFilter
-from django.forms import CheckboxSelectMultiple, TextInput, DateInput
+from django.forms import Select, SelectMultiple, TextInput, DateInput
 from .models import Post, Category
 
 
@@ -14,23 +14,25 @@ class PostFilter(FilterSet):
                    'placeholder': "Введите поисковый запрос...",
                    'aria-label': "Введите поисковый запрос...",
                    'aria-describedby': "button-search",
-                   }),
+                   },
+        ),
     )
 
     category = ModelMultipleChoiceFilter(
-        field_name='category',
         label='Поиск по категориям',
         queryset=Category.objects.all(),
-        widget=CheckboxSelectMultiple(
-            attrs={'type': 'checkbox',
-                   'class': "form-check-inline",
-                   }),
+        widget=SelectMultiple(
+            attrs={"class": "form-control"},
+        ),
     )
 
     typy_post = ChoiceFilter(
         field_name='type_post',
         label='Поиск по типу публикации',
         choices=Post.TYPE_POST,
+        widget=Select(
+            attrs={"class": "form-control"},
+        ),
     )
 
     title = CharFilter(
@@ -43,7 +45,8 @@ class PostFilter(FilterSet):
                    'placeholder': "Введите поисковый запрос...",
                    'aria-label': "Введите поисковый запрос...",
                    'aria-describedby': "button-search",
-                   }),
+                   },
+        ),
     )
 
     publishing_date__gt = DateFilter(
@@ -53,7 +56,8 @@ class PostFilter(FilterSet):
         widget=DateInput(
             attrs={'type': 'date',
                    'class': "form-control",
-                   }),
+                   },
+        ),
     )
 
     class Meta:
