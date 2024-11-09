@@ -10,6 +10,7 @@ from sign.models import Author
 from .forms import PostForm
 from .filters import PostFilter
 from .tasks import notify_new_post
+from django.conf import settings
 
 
 # Create your views here.
@@ -114,7 +115,6 @@ class PostCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({'action': 'create_post', 'user_id': self.request.user.id})
-        print(f'kwargs: {kwargs}')
         return kwargs
 
     def form_valid(self, form):
@@ -126,14 +126,14 @@ class PostCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         # Если news/create/ - меняем тип на Новость
         if str(self.request).__contains__('news/create'):
             object.type_post = 'News'
-
         object.save()
 
         # Обновляем категории публикации
         for category_id in dict(self.request.POST)['category']:
             PostCategory.objects.create(category_id=category_id, post_id=Post.objects.last().pk)
 
-        notify_new_post.apply_async([object.pk], countdown=5)
+        if settings.EMAIL_NEWSLETTER:
+            notify_new_post.apply_async([object.pk], countdown=5)
         return HttpResponseRedirect('/sign/user_account')
 
 

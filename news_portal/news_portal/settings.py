@@ -73,6 +73,7 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') # пароль от по�
 EMAIL_USE_SSL = True  # Яндекс использует ssl, подробнее о том, что это, почитайте в дополнительных источниках, но включать его здесь обязательно
 SERVER_EMAIL = os.getenv('SERVER_EMAIL')
 EMAIL_ADMIN = os.getenv('EMAIL_ADMIN')
+EMAIL_NEWSLETTER = bool(os.getenv('EMAIL_NEWSLETTER') == 'True')
 
 SITE_ID = 1
 SITE_URL = f'http://127.0.0.1:8000'
