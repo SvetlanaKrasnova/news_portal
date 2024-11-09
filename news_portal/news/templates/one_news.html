@@ -24,7 +24,7 @@ Post
                     {% endfor %}
                 </header>
                 <section class="mb-5">
-                    <p class="fs-5 mb-4">{{ post.text|censor }}</p>
+                    <p class="fs-5 mb-4">{{ post.text|censor|safe}}</p>
                 </section>
             </article>
 

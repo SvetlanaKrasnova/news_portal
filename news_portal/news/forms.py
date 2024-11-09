@@ -1,14 +1,40 @@
 from datetime import date
-from django import forms
 from django.core.exceptions import ValidationError
-from .models import Post
+from django.forms import ModelForm, TextInput, CharField, ModelMultipleChoiceField, SelectMultiple
+from django_summernote.widgets import SummernoteWidget
+from .models import Post, Category
 
 
-class PostForm(forms.ModelForm):
+class PostForm(ModelForm):
     def __init__(self, *args, **kwargs):
         self.action = kwargs.pop('action', None)
         self.user_id = kwargs.pop('user_id', None)
         super().__init__(*args, **kwargs)
+
+    title = CharField(
+        label='Наименовние',
+        widget=TextInput(
+            attrs={'type': 'text',
+                   'class': "form-control form_field_post",
+                   'placeholder': "Наименование публикации",
+                   },
+        ),
+    )
+
+    text = CharField(
+        label='Текст',
+        widget=SummernoteWidget(
+            attrs={'summernote': {'width': '1100px', 'height': '700px'}
+                   },
+        ),
+    )
+    category = ModelMultipleChoiceField(
+        label="Категория",
+        queryset=Category.objects.all(),
+        widget=SelectMultiple(
+            attrs={"class": "form-control form_field_category"},
+        ),
+    )
 
     class Meta:
         model = Post
@@ -17,11 +43,6 @@ class PostForm(forms.ModelForm):
             'text',
             'category',
         ]
-        labels = {
-            'title': 'Наименование',
-            'text': 'Текст',
-            'category': 'Категория'
-        }
 
     def clean(self):
         """

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.yandex',
+    'django_summernote',
 ]
 
 # формат даты, которую будет воспринимать наш задачник (вспоминаем модуль по фильтрам)
@@ -198,10 +199,16 @@ USE_I18N = True
 USE_TZ = False
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [BASE_DIR / 'static']
+MEDIA_ROOT = (BASE_DIR / 'media')
 
 LOGIN_URL = 'accounts/login/'
 LOGIN_REDIRECT_URL = '/'
+
+SUMMERNOTE_CONFIG = {
+    'attachment_storage_class': 'news.storage.CkeditorCustomStorage',
+}
