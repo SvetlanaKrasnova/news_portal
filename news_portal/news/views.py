@@ -79,6 +79,11 @@ class PostEdit(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Post
     template_name = 'post_edit.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Редактирование публикации"
+        return context
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({'action': 'edit_post'})
@@ -100,6 +105,11 @@ class PostCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Добавление новой публикации"
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

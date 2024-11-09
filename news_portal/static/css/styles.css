@@ -8104,6 +8104,13 @@ textarea.form-control-lg {
   justify-content: flex-end;
 }
 
+.form_field_post{
+    width:450px;
+}
+.form_field_category{
+    width:250px;
+}
+
 .text-black-50 {
   --bs-text-opacity: 1;
   color: rgba(0, 0, 0, 0.5) !important;

@@ -1,8 +1,8 @@
 from django.db import models
 from django.core.cache import cache
 from django.contrib.auth.models import User
-from sign.models import Author
 from django.urls import reverse
+from sign.models import Author
 
 
 # Create your models here.

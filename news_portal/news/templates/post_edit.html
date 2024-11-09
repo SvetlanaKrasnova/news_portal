@@ -1,19 +1,48 @@
 {% extends 'default.html' %}
 
 {% block title %}
-Редактирование
+{{ title }}
 {% endblock title %}
 
 {% block content %}
-<h1 class="fw-bolder mb-1">Публикация</h1>
-<hr class="my-0" />
+<h2 class="fw-bolder mb-1">{{ title }}</h2>
+
 <p></p>
-<form action="" method="post">
-    {% csrf_token %}
-    <table>
-    {{ form.as_table }}
-    </table>
-    <p></p>
-    <input class="btn btn-primary" type="submit" value="Сохранить" />
-</form>
+<section class="mb-5">
+    <div class="card bg-light">
+        <div class="card-body">
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.media }}
+                <div class="form-group card-body">
+                    <div class="row">
+                        <div class="col-sm-auto">
+                            <h2 class="card-title h5">{{form.title.label_tag}}</h2>
+                        </div>
+                        <div class="col-sm-auto">
+                            {{form.title}}
+                            <div class="error">{{field.errors}}</div>
+                        </div>
+                        <div class="col-sm-auto">
+                            <h2 class="card-title h5">{{form.category.label_tag}}</h2>
+                        </div>
+                        <div class="col-sm-auto">
+                            {{form.category}}
+                            <div class="error">{{field.errors}}</div>
+                        </div>
+                        <div class="col-sm-auto">
+                            <input class="btn btn-primary" type="submit" value="Сохранить" />
+                        </div>
+                    </div>
+                    <p class="card-text"></p>
+                    <h2 class="card-title h5">{{form.text.label_tag}}</h2>
+                    <p class="card-text"></p>
+                    <div>{{form.text}}</div>
+                    <div class="error">{{field.errors}}</div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</section>
 {% endblock content %}
