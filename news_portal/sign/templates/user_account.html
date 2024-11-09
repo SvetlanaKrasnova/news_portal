@@ -40,7 +40,7 @@
                                 <div class="card-body">
                                 <div class="small text-muted">{{ news.publishing_date|date:'l d, M' }}</div>
                                 <h2 class="card-title h4">{{ news.title|censor }}</h2>
-                                <a class="btn btn-primary" href="/{{ news.id }}">Читать →</a>
+                                <a class="btn btn-primary" href="/news/{{ news.id }}">Читать →</a>
                                 <a class="btn btn-primary" href="/{{ news.type_post|lower }}/{{ news.id }}/edit">Редактировать</a>
                                 <a class="btn btn-primary" href="/{{ news.type_post|lower }}/{{ news.id }}/delete">Удалить</a>
                                 </div>
