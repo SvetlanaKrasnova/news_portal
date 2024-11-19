@@ -214,6 +214,10 @@ SUMMERNOTE_CONFIG = {
     'attachment_storage_class': 'news.storage.CkeditorCustomStorage',
 }
 
+ADMINS = [
+    ('admin_news_portal', os.getenv('EMAIL_ADMIN')),
+]
+
 # EMAIL_FILE_PATH = 'email_messages'
 LOGGING = {
     'version': 1,
@@ -229,11 +233,11 @@ LOGGING = {
             'datefmt': '%d-%m-%Y %H:%M:%S',
         },
         'warning': {
-            'format': '%(asctime)s [%(levelname)s] - %(message)s - %{pathname}s',
+            'format': '%(asctime)s [%(levelname)s] - %(message)s - %(pathname)s',
             'datefmt': '%d-%m-%Y %H:%M:%S',
         },
         'errors': {
-            'format': '%(asctime)s [%(levelname)s] - %(message)s - %{pathname}s - %{exc_info}s',
+            'format': '%(asctime)s [%(levelname)s] - %(message)s - %(pathname)s - %(exc_info)s',
             'datefmt': '%d-%m-%Y %H:%M:%S',
         },
     },
@@ -300,27 +304,22 @@ LOGGING = {
         },
         'django.request': {
             'handlers': ['mail_admins', 'file_errors'],
-            'level': 'ERROR',
             'propagate': True,
         },
         'django.server': {
             'handlers': ['mail_admins', 'file_errors'],
-            'level': 'ERROR',
             'propagate': True,
         },
         'django.template': {
             'handlers': ['file_errors'],
-            'level': 'ERROR',
             'propagate': True,
         },
         'django.db.backends': {
             'handlers': ['file_errors'],
-            'level': 'ERROR',
             'propagate': True,
         },
         'django.security.*': {
             'handlers': ['file_security'],
-            'level': 'INFO',
             'propagate': True,
         },
     }
