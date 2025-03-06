@@ -10,4 +10,5 @@ django-apscheduler==0.7.0
 redis==5.1.1
 celery==5.4.0
 django-summernote==0.8.20.0
-rich=13.9.4
+rich==13.9.4
+django-modeltranslation==0.18.10
